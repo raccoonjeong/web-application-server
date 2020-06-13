@@ -9,6 +9,16 @@ import com.google.common.collect.Maps;
 
 public class HttpRequestUtils {
     /**
+     * @param URL
+     *            URL에서 / 이후, ? 이전 전달되는 값
+     * @return
+     */
+    public static String parseURL(String header) {
+        String[] tokens = header.split(" ");
+        return tokens[1];
+    }
+
+    /**
      * @param queryString은
      *            URL에서 ? 이후에 전달되는 field1=value1&field2=value2 형식임
      * @return
