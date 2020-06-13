@@ -27,13 +27,16 @@ public class RequestHandler extends Thread {
             DataOutputStream dos = new DataOutputStream(out);
 
             String line = br.readLine();
-
-            if(line == null) return;
-
-            byte[] body = Files.readAllBytes(new File("./webapp" + HttpRequestUtils.parseURL(line)).toPath());
-            response200Header(dos, body.length);
-            responseBody(dos, body);
-
+            String url = HttpRequestUtils.parseURL(line);
+            if("".equals(url) || "/".equals(url)) {
+                byte[] body = "Hello World".getBytes();
+                response200Header(dos, body.length);
+                responseBody(dos, body);
+            }else {
+                byte[] body = Files.readAllBytes(new File("./webapp" + url).toPath());
+                response200Header(dos, body.length);
+                responseBody(dos, body);
+            }
 //            while(!"".equals(line)) {
 //                if(line == null) return;
 //                bodyLine.append(line+"<br>");
