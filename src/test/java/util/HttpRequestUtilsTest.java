@@ -1,6 +1,7 @@
 package util;
 
 import static org.hamcrest.CoreMatchers.*;
+import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.*;
 
 import java.util.Map;
@@ -10,9 +11,40 @@ import org.junit.Test;
 import util.HttpRequestUtils.Pair;
 
 public class HttpRequestUtilsTest {
+
+    @Test
+    public void parsePathAndParams() {
+        String url = "/user/create?userId=ddd&password=&name=ddd&email=ddd%40ddd";
+        assertThat(HttpRequestUtils.parsePathAndParams(url), is(new String[]{"/user/create","userId=ddd&password=&name=ddd&email=ddd%40ddd"}));
+    }
+
+    @Test
+    public void parsePathAndParams_null() {
+        String url = null;
+        assertThat(HttpRequestUtils.parsePathAndParams(url), is(nullValue()));
+    }
+
+    @Test
+    public void parsePathAndParams_invalid() {
+        String url = "/user/create?userId=?ddd&password=&name=?ddd&email=ddd%40ddd";
+        assertThat(HttpRequestUtils.parsePathAndParams(url), is(new String[]{"/user/create","userId=?ddd&password=&name=?ddd&email=ddd%40ddd"}));
+    }
+
     @Test
     public void parseURL() {
         String header = "GET /index.html HTTP/1.1";
+        assertThat(HttpRequestUtils.parseURL(header), is("/index.html"));
+    }
+
+    @Test
+    public void parseURL_null() {
+        String header = null;
+        assertThat(HttpRequestUtils.parseURL(header), is(""));
+    }
+
+    @Test
+    public void parseURL_invalid() {
+        String header = "GET /index.html";
         assertThat(HttpRequestUtils.parseURL(header), is("/index.html"));
     }
 

@@ -9,6 +9,22 @@ import com.google.common.collect.Maps;
 
 public class HttpRequestUtils {
     /**
+     * @param url
+     *            requestPath, params 분리
+     * @return
+     */
+    public static String[] parsePathAndParams(String url) {
+        if (url == null || "".equals(url) || "/".equals(url)) return null;
+
+        String[] pathAndParams = new String[2];
+        int index = url.indexOf("?");
+        if(index < 0) return new String[]{url};
+        pathAndParams[0] = url.substring(0, index); // requestPath
+        pathAndParams[1] = url.substring(index + 1); // params
+
+        return pathAndParams;
+    }
+    /**
      * @param header
      *            URL에서 / 이후, ? 이전 전달되는 값
      * @return
